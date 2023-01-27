@@ -10,11 +10,13 @@ use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use PhpFidder\Core\Renderer\MustacheTemplateRenderer;
 use PhpFidder\Core\Renderer\TemplateRendererInterface;
-use PhpFidder\Core\Repository\PDOUserRepository;
 use PhpFidder\Core\Repository\UserRepository;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use PhpFidder\Core\Repository\PDOUserRepository;
+
+
 
 return [
     'templatePath' => __DIR__.'/templates',
@@ -60,8 +62,10 @@ return [
 
         return $pdo;
     },
+
     UserRepository::class => function(ContainerInterface $container){
-        $pdo = $container->get(PDO::class);
-        return new PDOUserRepository($pdo);
+       # $pdo = $container->get(PDO::class);
+        return new PDOUserRepository();
+        
     }
 ];

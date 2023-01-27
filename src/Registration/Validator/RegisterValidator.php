@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * 
+ * Zum validieren von Daten, die zur Registrierung des Users verwendet werden
+ * es wird nur geprüft, ob die Daten valide sind bevor diese weiter verarbeitet
+ * werden
+ */
 declare(strict_types=1);
 
 namespace PhpFidder\Core\Registration\Validator;
@@ -31,7 +38,7 @@ class RegisterValidator{
             $this->errors[] = "Email is invalid";
         }
 
-        if(mb_strlen($username) !== mb_strlen($passwordRepeat)){
+        if(htmlspecialchars($password,ENT_COMPAT) !== htmlspecialchars($passwordRepeat,ENT_COMPAT)){
             $this->errors[] = "password doesnt match ";
         }
         

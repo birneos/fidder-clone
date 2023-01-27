@@ -46,8 +46,8 @@ $router->map('GET', '/', function (ServerRequestInterface $request) use($contain
     return $response;
 });
 
-#$router->map('POST','/account/create', Register::class);
 $router->map('GET','/account/create', Register::class);
+$router->map('POST','/account/create', Register::class);
 
 $response = $router->dispatch($request);
 

@@ -5,6 +5,8 @@ namespace PhpFidder\Core\Registration\Action;
 use PhpFidder\Core\Registration\Validator\RegisterValidator;
 use Laminas\Diactoros\Response\RedirectResponse;
 use PhpFidder\Core\Renderer\TemplateRendererInterface;
+use PhpFidder\Core\Repository\UserRepository;
+use PhpFidder\Core\Registration\Hydrator\UserHydrator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -13,14 +15,17 @@ final class Register{
 
     public function __construct(
         private readonly TemplateRendererInterface $renderer,
-        private readonly RegisterValidator $validator
+        private readonly RegisterValidator $validator,
+        private readonly UserHydrator $userHydrator,
+        private readonly UserRepository $userRepository
         ){
 
     }
     public function __invoke(ServerRequestInterface $request):ResponseInterface{
 
+        $isPostRequest = $request->getMethod() === 'POST';
         $body = [];
-        if($request->getMethod() === 'POST'){
+        if($isPostRequest){
             $body = $request->getParsedBody();
             
         }
@@ -31,12 +36,15 @@ final class Register{
         $email =  $body['email'] ?? '';
 
 
-        if($this->validator->isValid($username,$email, $password, $passwordRepeat)){
+        if($isPostRequest && $this->validator->isValid($username,$email, $password, $passwordRepeat)){
 
             //user erstellen
             //redirect irgendwo hin
 
-           
+           $user =  $this->userHydrator->hydrate($body);
+            $this->userRepository->add($user);
+            $this->userRepository->persist();
+
 
             return new RedirectResponse('/');
         }

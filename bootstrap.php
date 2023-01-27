@@ -4,11 +4,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use League\Route\RouteCollectionInterface;
-use PhpFidder\Core\Components\Registration\Action\Register;
+
 use PhpFidder\Core\Renderer\TemplateRendererInterface;
-use PhpFidder\Core\Renderer\TemplateRendererMiddleware;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use PhpFidder\Core\Registration\Action\Register;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -23,7 +24,17 @@ $router = $container->get(RouteCollectionInterface::class);
 $request = $container->get(ServerRequestInterface::class);
 $emitter = $container->get(EmitterInterface::class);
 
-$router->middleware($container->get(TemplateRendererMiddleware::class));
+
+
+
+$router->map('GET', '/test', function (ServerRequestInterface $request) use($container):ResponseInterface {
+    $renderer = $container->get(TemplateRendererInterface::class);
+    $body = $renderer->render('index', ['test'=>"Hat jeklappt"]);
+    $response = new Laminas\Diactoros\Response;
+    $response->getBody()->write($body);
+    return $response;
+});
+
 
 // map a route
 $router->map('GET', '/', function (ServerRequestInterface $request) use($container): ResponseInterface {
@@ -35,8 +46,8 @@ $router->map('GET', '/', function (ServerRequestInterface $request) use($contain
     return $response;
 });
 
+#$router->map('POST','/account/create', Register::class);
 $router->map('GET','/account/create', Register::class);
-$router->map('POST','/account/create', Register::class);
 
 $response = $router->dispatch($request);
 

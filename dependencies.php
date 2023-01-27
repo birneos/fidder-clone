@@ -33,6 +33,8 @@ return [
     EventDispatcherInterface::class => function(ContainerInterface $container){
         return new EventDispatcher();
     },
+
+    //Sobald eine Abhängikeit zu diesem Interface besteht (hier Mustache)
     TemplateRendererInterface::class => function(ContainerInterface $container)
     {
         $mustache = new Mustache_Engine([

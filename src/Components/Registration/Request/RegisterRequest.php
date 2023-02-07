@@ -1,9 +1,11 @@
 <?php
-namespace PhpFidder\Core\Registration\Request;
+
+namespace PhpFidder\Core\Components\Registration\Request;
+
 use Psr\Http\Message\ServerRequestInterface;
 
-class RegisterRequest{
-
+class RegisterRequest
+{
     private readonly string $username;
     private readonly string $email;
     private readonly string $password;
@@ -12,19 +14,20 @@ class RegisterRequest{
 
     private readonly array $errors;
 
-    function __construct(ServerRequestInterface $request){
-
+    public function __construct(ServerRequestInterface $request)
+    {
         $body = [];
         $body = $request->getParsedBody();
         $this->method = $request->getMethod();
-        
+
         $this->username = $body['username'] ?? '';
         $this->password = $body['password'] ?? '';
         $this->passwordRepeat = $body['passwordRepeat'] ?? '';
         $this->email =  $body['email'] ?? '';
     }
 
-    public function toArray(){
+    public function toArray()
+    {
         return [
             'username' => $this->getUsername(),
             'email' => $this->getEmail(),
@@ -34,32 +37,38 @@ class RegisterRequest{
         ];
     }
 
-    public function isPostRequest(){
+    public function isPostRequest()
+    {
         return ($this->method === 'POST');
     }
 
-    public function getUsername(){
+    public function getUsername()
+    {
         return $this->username;
     }
 
-    public function getEmail(){
+    public function getEmail()
+    {
         return $this->email;
     }
-    public function getPassword(){
+    public function getPassword()
+    {
         return $this->password;
     }
-    public function getPasswordRepeat(){
+    public function getPasswordRepeat()
+    {
         return $this->passwordRepeat;
     }
 
-    public function getErrors():array{
+    public function getErrors(): array
+    {
         return $this->errors;
     }
 
     //Klasse wird Immutable, also ohne Setter, sondern geben
     //ein geklontes Object zurück
-    public function withErros(array $errors):self{
-
+    public function withErros(array $errors): self
+    {
         //Immutable
         $clone = clone $this;
         $clone->errors = $errors;

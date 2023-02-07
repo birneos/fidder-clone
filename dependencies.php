@@ -64,8 +64,8 @@ return [
     },
 
     UserRepository::class => function(ContainerInterface $container){
-       # $pdo = $container->get(PDO::class);
-        return new PDOUserRepository();
+        $pdo = $container->get(PDO::class);
+        return new PDOUserRepository($pdo);
         
     }
 ];

@@ -1,13 +1,12 @@
 <?php
 
-namespace PhpFidder\Core\Registration\Event;
+namespace PhpFidder\Core\Components\Registration\Event;
+
 use PhpFidder\Core\Entity\UserEntity;
 
-
-class RegistrationSuccessEvent{
-
-
-    public function __construct(UserEntity $user){
-
+class RegistrationSuccessEvent
+{
+    public function __construct(UserEntity $user)
+    {
     }
 }

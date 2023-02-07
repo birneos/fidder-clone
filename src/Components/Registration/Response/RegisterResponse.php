@@ -1,12 +1,14 @@
 <?php
 
-namespace PhpFidder\Core\Registration\Response;
+namespace PhpFidder\Core\Components\Registration\Response;
+
 use Laminas\Diactoros\Response;
-use PhpFidder\Core\Registration\Request\RegisterRequest;
+
+use PhpFidder\Core\Components\Registration\Request\RegisterRequest;
 use PhpFidder\Core\Renderer\RenderAwareInterface;
 
-class RegisterResponse extends Response implements RenderAwareInterface {
-
+class RegisterResponse extends Response implements RenderAwareInterface
+{
     public readonly string $username;
     public readonly string $email;
     public readonly string $password;
@@ -14,8 +16,9 @@ class RegisterResponse extends Response implements RenderAwareInterface {
 
     public readonly array $errors;
 
-    public function __construct(RegisterRequest $request){
-
+    public function __construct(RegisterRequest $request)
+    {
+        parent::__construct();
         $this->username = $request->getUsername();
         $this->email = $request->getEmail();
         $this->password = $request->getPassword();
@@ -23,11 +26,11 @@ class RegisterResponse extends Response implements RenderAwareInterface {
     }
 
 
-	/**
-	 * @return string
-	 */
-	public function getTemplateName(): string {
-
+    /**
+     * @return string
+     */
+    public function getTemplateName(): string
+    {
         return 'register';
-	}
+    }
 }

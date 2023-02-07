@@ -17,7 +17,7 @@ $dotenv->load();
 
 $builder = new \DI\ContainerBuilder();
 
-$builder->addDefinitions(__DIR__.'/dependencies.php');
+$builder->addDefinitions( __DIR__ . '/dependencies.php' );
 
 $container = $builder->build();
 
